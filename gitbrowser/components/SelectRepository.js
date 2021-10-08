@@ -144,7 +144,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginVertical: 36,
         marginHorizontal: 8,
-        borderbottomColor: '#000000',
         borderBottomWidth: 1
     },
     textCenter: {
