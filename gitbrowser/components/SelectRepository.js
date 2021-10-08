@@ -19,7 +19,7 @@ export const SelectRepository = ({ navigation }) => {
 
     let responseIssues = null;
     let issues = null;
-    let resultsError = false;
+    let fetchError = false;
     let nextButtonText = "Press Here!";
     let infoText = "Please enter GitHub username and repository below:";
     let sampleText = "username/repository";
@@ -38,12 +38,11 @@ export const SelectRepository = ({ navigation }) => {
             fetchError = null;
 
             if (IsPathCorrect(value)) {
-
-                // Fetch online data and proceed.
+                // Fetch online data and proceed to next page.
                 await fetchIssuesAsync();
-                if (responseIssues) {  
+                
+                if (responseIssues)
                     navigation.navigate(App.SCREEN_ISSUELIST, { issues: responseIssues });
-                }
                 else if (fetchError)
                     Alert.alert(alertTitle, alertErrorMessage);
                 else
@@ -54,11 +53,10 @@ export const SelectRepository = ({ navigation }) => {
             }
         }
         catch (error) {
-            console.error("Exception on next button.");
+            console.error("Exception on next button");
             console.error(error);
-            resultsError = true;
         }
-        finally{
+        finally {
             onFetchingChanged(false);
         }
     };
@@ -131,15 +129,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    container: {
-        flex: 1,
-        justifyContent: "center"
-    },
-    horizontal: {
-        flexDirection: "row",
-        justifyContent: "space-around",
-        padding: 10
     },
     sectionCenter: {
         flex: 1,
