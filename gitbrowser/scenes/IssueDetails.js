@@ -102,11 +102,17 @@ export const IssueDetails = ({ route }) => {
                     renderItem={getItemView} />
             </View>
 
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            <KeyboardAvoidingView 
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                keyboardVerticalOffset={
+                    Platform.select({
+                        ios: () => 0,
+                        android: () => 100
+                    })()
+                }
                 style={styles.focusableKeyboardStyle}
             >
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <TouchableWithoutFeedback  onPress={Keyboard.dismiss}>
                     <View style={styles.focusableViewStyle}>
                         <Text style={styles.textCenter}>{infoText}</Text>
                         <TextInput
@@ -154,6 +160,7 @@ const styles = StyleSheet.create({
         marginVertical: 36,
     },
     inputStyle: {
+        height: 50,
         marginVertical: 16,
         borderBottomWidth: 1
     },
