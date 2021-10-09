@@ -2,7 +2,7 @@
  * Browse issue details and allow to put comment.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Text, SafeAreaView, Keyboard,
     TouchableWithoutFeedback, Platform,
@@ -10,38 +10,69 @@ import {
     FlatList, TextInput, Button, ActivityIndicator,
     KeyboardAvoidingView
 } from 'react-native';
+import 'react-native-get-random-values';
+import { v4 as uuid } from 'uuid';
 import { rowSeparatorView } from '../components/atoms/rowSeparatorView';
+import StorageService from '../services/StorageService';
 
-export const IssueDetails = ({ navigation, route }) => {
-    const [commentText, onCommentTextChanged] = useState('');
+export const IssueDetails = ({ route }) => {
+
+    const [comments, setComments] = useState([]);
+    const [commentText, setCommentText] = useState('');
     const [isSavingComment, setIsSavingComment] = useState(false);
 
     let issue = route.params.issue;
-    let commentsText = "List of comments:";
-    let saveCommentText = "Save comment";
-    let infoText = "Please write comment below:";
-    let helpDefaultText = "Comment...";
+    let commentsText = 'List of comments:';
+    let saveCommentText = 'Save comment';
+    let infoText = 'Please write comment below:';
+    let helpDefaultText = 'Comment...';
 
-    const array = [
-        { id: '53205', comment: 'sample 1' },
-        { id: '23059', comment: 'sample 2' }
-    ];
+    useEffect(() => {
+        getData()
+    }, []);
 
-    let onSaveCommentPressed = async () => {
+    const onSaveCommentPressed = () => {
         try {
+            if (!commentText)
+                return;
+
             setIsSavingComment(true);
+            saveData(issue.id);
+            getData();          
         }
         catch (error) {
-            console.error("Exception on saving comment");
+            console.error('Exception on saving comment');
             console.error(error);
         }
         finally {
             setTimeout(() => {
                 setIsSavingComment(false);
-                onCommentTextChanged('');
+                setCommentText('');
             }, 1000);
         }
-    };
+    }
+
+    const saveData = async (id) => {
+        let updatedComments = comments;
+        updatedComments.push({ id: uuid(), comment: commentText });
+        const jsonValue = JSON.stringify(updatedComments);
+        StorageService.saveComments(id, jsonValue);
+    }
+
+    const getData = async () => {
+        try {
+            const userAge = await StorageService.readComments(issue.id);
+            var val = JSON.parse(userAge);
+            if (userAge !== null) {
+                setComments(val);
+            }
+        }
+        catch (error) {
+            console.error('Exception on saving comment');
+            console.error(error);
+            alert('Failed to get data from storage.');
+        }
+    }
 
     const getItemView = ({ item }) => {
         return (
@@ -65,14 +96,14 @@ export const IssueDetails = ({ navigation, route }) => {
             <View style={styles.sectionCommentList}>
                 <Text style={styles.textCenter}>{commentsText}</Text>
                 <FlatList
-                    data={array}
+                    data={comments}
                     keyExtractor={item => item.id}
                     ItemSeparatorComponent={rowSeparatorView}
                     renderItem={getItemView} />
             </View>
 
             <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={styles.focusableKeyboardStyle}
             >
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -81,8 +112,8 @@ export const IssueDetails = ({ navigation, route }) => {
                         <TextInput
                             style={styles.inputStyle}
                             multiline={false}
-                            onChangeText={onCommentTextChanged}
-                            defaultValue={helpDefaultText}
+                            onChangeText={setCommentText}
+                            helpDefaultText={helpDefaultText}
                             value={commentText} />
                         <Button
                             disabled={isSavingComment}
@@ -130,7 +161,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     itemStyle: {
-        justifyContent: "center",
+        justifyContent: 'center',
         height: 30
     },
     itemTextStyle: {
@@ -139,11 +170,11 @@ const styles = StyleSheet.create({
     },
     focusableKeyboardStyle: {
         flex: 1,
-        justifyContent: "center"
+        justifyContent: 'center'
     },
     focusableViewStyle: {
         padding: 24,
         flex: 1,
-        justifyContent: "space-around"
+        justifyContent: 'space-around'
     },
 });

@@ -2,9 +2,9 @@
  * Listing on infinite scroll list issues from repository.
  */
 
+import * as App from '../App';
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, FlatList, SafeAreaView, StyleSheet } from 'react-native';
-import * as App from '../App';
 import { rowSeparatorView } from '../components/atoms/rowSeparatorView';
 
 export const IssueList = ({ navigation, route }) => {
@@ -26,6 +26,7 @@ export const IssueList = ({ navigation, route }) => {
             setIssueListSource(source.slice(0, newOffset));
             setTimeout(() => {
                 if (newOffset >= source.length) {
+
                     // No need to load more items.
                     setIsListEnd(true);
                 }
@@ -71,7 +72,7 @@ export const IssueList = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
     itemStyle: {
-        justifyContent: "center",
+        justifyContent: 'center',
         height: 100
     },
     itemTextStyle: {
@@ -80,6 +81,6 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        justifyContent: "center"
+        justifyContent: 'center'
     }
 });

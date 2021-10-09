@@ -1,19 +1,19 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { SelectRepository } from "../gitbrowser/scenes/SelectRepository";
-import { IssueDetails } from "../gitbrowser/scenes/IssueDetails";
-import { IssueList } from "../gitbrowser/scenes/IssueList";
+import { SelectRepository } from '../gitbrowser/scenes/SelectRepository';
+import { IssueDetails } from '../gitbrowser/scenes/IssueDetails';
+import { IssueList } from '../gitbrowser/scenes/IssueList';
 
-export const SCREEN_SELECTREPOSITORY = "SelectRepository";
-export const SCREEN_ISSUELIST = "IssueList";
-export const SCREEN_ISSUEDETAILS = "IssueDetails";
+export const SCREEN_SELECTREPOSITORY = 'SelectRepository';
+export const SCREEN_ISSUELIST = 'IssueList';
+export const SCREEN_ISSUEDETAILS = 'IssueDetails';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
-    let selectRepository = "Select repository";
-    let issues = "Issues";
-    let issueDetails = "Issue details";
+    let selectRepository = 'Select repository';
+    let issues = 'Issues';
+    let issueDetails = 'Issue details';
 
     return (
         <NavigationContainer>

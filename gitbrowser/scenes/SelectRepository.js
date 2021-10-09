@@ -2,12 +2,12 @@
  * Selection of repository necessary to browse issues.
  */
 
-const { Octokit } = require("@octokit/core");
+const { Octokit } = require('@octokit/core');
 
+import * as App from '../App';
 import React, { useState } from 'react';
 import { ActivityIndicator, Button, Text, TextInput, View, Alert, SafeAreaView, StyleSheet } from 'react-native';
 import { IsPathCorrect } from '../helpers/regexValidator';
-import * as App from '../App';
 
 export const SelectRepository = ({ navigation }) => {
     const [repositoryPath, onRepositoryPathChanged] = useState('githubtraining/training-manual');
@@ -16,15 +16,15 @@ export const SelectRepository = ({ navigation }) => {
     let responseIssues = null;
     let issues = null;
     let fetchError = false;
-    let nextButtonText = "Press Here!";
-    let infoText = "Please enter GitHub username and repository below:";
-    let sampleText = "username/repository";
-    let nextInfoText = "Find repository and try show issues(s)";
-    let helpDefaultText = "githubtraining/training-manual";
-    let alertTitle = "Alert";
-    let alertMessage = "Please use correct pattern: username/repository";
-    let alertNoIssuesMessage = "No issues found for provided repository";
-    let alertErrorMessage = "Unknown error. Try again or check username or repository";
+    let nextButtonText = 'Press Here!';
+    let infoText = 'Please enter GitHub username and repository below:';
+    let sampleText = 'username/repository';
+    let nextInfoText = 'Find repository and try show issues(s)';
+    let helpDefaultText = 'githubtraining/training-manual';
+    let alertTitle = 'Alert';
+    let alertMessage = 'Please use correct pattern: username/repository';
+    let alertNoIssuesMessage = 'No issues found for provided repository';
+    let alertErrorMessage = 'Unknown error. Try again or check username or repository';
     let onNextPressed = async () => {
 
         try {
@@ -49,7 +49,7 @@ export const SelectRepository = ({ navigation }) => {
             }
         }
         catch (error) {
-            console.error("Exception on next button");
+            console.error('Exception on next button');
             console.error(error);
         }
         finally {
@@ -73,7 +73,7 @@ export const SelectRepository = ({ navigation }) => {
                     });
                 })
                 .catch((error) => {
-                    console.error("Exception while requesting issues");
+                    console.error('Exception while requesting issues');
                     console.error(error);
                     fetchError = true;
                 });
