@@ -2,22 +2,19 @@
  * Listing on infinite scroll list issues from repository.
  */
 
-import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, Button, Text, TextInput, View, TouchableOpacity, NetInfo, FlatList } from 'react-native';
-import {
-    SafeAreaView,
-    StyleSheet
-} from 'react-native';
+import React, { useState } from 'react';
+import { Text, TouchableOpacity, FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import * as App from '../App';
+import { rowSeparatorView } from '../components/atoms/rowSeparatorView';
 
 export const IssueList = ({ navigation, route }) => {
 
     let source = route.params.issues;
-    let loadNumber = 10;
+    let loadNumber = 20;
 
     const [loading, setLoading] = useState(false);
     const [offset, setOffset] = useState(loadNumber);
-    const [dataSource, setDataSource] = useState(source.slice(0, offset));
+    const [issueListSource, setIssueListSource] = useState(source.slice(0, offset));
     const [isListEnd, setIsListEnd] = useState(false);
     const [callOnScrollEnd, setCallOnScrollEnd] = useState(false);
 
@@ -26,8 +23,8 @@ export const IssueList = ({ navigation, route }) => {
         if (!loading && !isListEnd) {
             setLoading(true);
             setOffset(newOffset);
-            setDataSource(source.slice(0, newOffset));   
-            setTimeout(() => {     
+            setIssueListSource(source.slice(0, newOffset));
+            setTimeout(() => {
                 if (newOffset >= source.length) {
                     // No need to load more items.
                     setIsListEnd(true);
@@ -50,36 +47,18 @@ export const IssueList = ({ navigation, route }) => {
         );
     };
 
-    const getListFooter = () => {
-        return (
-            <View style={styles.footer}>
-                {loading ? (
-                    <ActivityIndicator
-                        color="black"
-                        style={{ margin: 15 }} />
-                ) : null}
-            </View>
-        );
-    };
-
-    const getItemSeparatorView = () => {
-        return (
-            <View style={styles.itemSeparatorStyle} />
-        );
-    };
-
     const getItem = (item) => {
-        // Function for click on an item
-        alert('Id : ' + item.id + ' Title : ' + item.title);
+        navigation.navigate(App.SCREEN_ISSUEDETAILS, { issue: item });
     };
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <FlatList
-                data={dataSource}
+                data={issueListSource}
                 initialNumToRender={loadNumber}
                 keyExtractor={(item, index) => index.toString()}
-                ItemSeparatorComponent={getItemSeparatorView}
-                renderItem={getItemView}    
+                ItemSeparatorComponent={rowSeparatorView}
+                renderItem={getItemView}
                 onEndReached={() => setCallOnScrollEnd(true)}
                 onMomentumScrollEnd={() => {
                     callOnScrollEnd && getMoreData()
@@ -91,11 +70,6 @@ export const IssueList = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-    itemSeparatorStyle: {
-        height: 0.5,
-        width: '100%',
-        backgroundColor: '#000000',
-    },
     itemStyle: {
         justifyContent: "center",
         height: 100
@@ -107,11 +81,5 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center"
-    },
-    footer: {
-        padding: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
     }
 });

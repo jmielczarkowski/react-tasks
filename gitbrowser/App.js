@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { SelectRepository } from "../gitbrowser/components/SelectRepository";
-import { IssueDetails } from "../gitbrowser/components/IssueDetails";
-import { IssueList } from "../gitbrowser/components/IssueList";
+import { SelectRepository } from "../gitbrowser/scenes/SelectRepository";
+import { IssueDetails } from "../gitbrowser/scenes/IssueDetails";
+import { IssueList } from "../gitbrowser/scenes/IssueList";
 
 export const SCREEN_SELECTREPOSITORY = "SelectRepository";
 export const SCREEN_ISSUELIST = "IssueList";
@@ -11,7 +11,6 @@ export const SCREEN_ISSUEDETAILS = "IssueDetails";
 
 const Stack = createNativeStackNavigator();
 const App = () => {
-
     let selectRepository = "Select repository";
     let issues = "Issues";
     let issueDetails = "Issue details";
@@ -24,7 +23,6 @@ const App = () => {
                     component={SelectRepository}
                     options={{ title: selectRepository }}
                 />
-
                 <Stack.Screen
                     name={SCREEN_ISSUELIST}
                     component={IssueList}
@@ -35,9 +33,6 @@ const App = () => {
                     component={IssueDetails}
                     options={{ title: issueDetails }}
                 />
-
-
-
             </Stack.Navigator>
         </NavigationContainer>
     );

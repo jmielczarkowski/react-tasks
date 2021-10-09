@@ -5,16 +5,12 @@
 const { Octokit } = require("@octokit/core");
 
 import React, { useState } from 'react';
-import { ActivityIndicator, Button, Text, TextInput, View, Alert, NetInfo } from 'react-native';
-import {
-    SafeAreaView,
-    StyleSheet
-} from 'react-native';
+import { ActivityIndicator, Button, Text, TextInput, View, Alert, SafeAreaView, StyleSheet } from 'react-native';
 import { IsPathCorrect } from '../helpers/regexValidator';
 import * as App from '../App';
 
 export const SelectRepository = ({ navigation }) => {
-    const [value, onChangeText] = useState('githubtraining/training-manual');
+    const [repositoryPath, onRepositoryPathChanged] = useState('githubtraining/training-manual');
     const [isFetching, onFetchingChanged] = useState(false);
 
     let responseIssues = null;
@@ -37,7 +33,7 @@ export const SelectRepository = ({ navigation }) => {
             responseIssues = null;
             fetchError = null;
 
-            if (IsPathCorrect(value)) {
+            if (IsPathCorrect(repositoryPath)) {
                 // Fetch online data and proceed to next page.
                 await fetchIssuesAsync();
                 
@@ -67,7 +63,7 @@ export const SelectRepository = ({ navigation }) => {
 
     function callFetchUsingTimeout(timeInSeconds) {
         return new Promise(function (resolve) {
-            let query = 'GET /repos/' + value + '/issues';
+            let query = 'GET /repos/' + repositoryPath + '/issues';
             const octokit = new Octokit();
             octokit
                 .request(query)
@@ -100,8 +96,8 @@ export const SelectRepository = ({ navigation }) => {
                     style={styles.inputStyle}
                     multiline={false}
                     defaultValue={helpDefaultText}
-                    onChangeText={text => onChangeText(text)}
-                    value={value} />
+                    onChangeText={text => onRepositoryPathChanged(text)}
+                    value={repositoryPath} />
                 <Text style={styles.textCenter}>{sampleText}</Text>
             </View>
             <View style={styles.sectionBottom}>
