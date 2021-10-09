@@ -42,4 +42,4 @@ Contains sample mobile application (iOS and Android) that pulls data from GitHub
 
 ## demo
 
-![Demo](https://i.makeagif.com/media/10-09-2021/1_SE1i.gif)
+![Demo](https://i.ibb.co/wz7rwYH/417a736e18e4516a43358b1f2106302afc9b956f.gif)
